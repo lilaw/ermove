@@ -1,69 +1,17 @@
 import * as puppeteer from "puppeteer";
-// import {Map} from "immutable"
-import * as fs from "fs";
-import { Readable } from "stream";
+import { login, startBrowser, sleep, saveFile } from "./lib";
 
-type ExtractTypeInPromise<T> = T extends PromiseLike<infer U> ? U : T;
-type thead = {
-  title: string | undefined;
-  url: string | undefined;
-  author: string | undefined;
-};
-interface sourceNode {
-  title: string;
-  url: string;
-}
-interface sourceNodeWithTheads extends sourceNode {
-  theads: thead[];
-}
-type sourceEntry = {
-  topic: string;
-  sourceNodes: sourceNode[];
-}[];
-type sourceEntryWithTheads = {
-  topic: string;
-  sourceNodes: sourceNodeWithTheads[];
-}[];
+import {sourceEntryWithTheads, sourceEntry, sourceNodeWithTheads, sourceNode} from "./types"
 
-async function startBrowser() {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox"],
-  });
-
-  return browser;
-}
-
-main().catch(console.error);
-async function main() {
+export async function main(): Promise<void> {
   const browser = await startBrowser();
-  const tab = await openHomePage(browser);
+  const tab = await login(browser);
   const sourceEntry = await getResourceEntry(tab);
-  const theadsEntry = await addTheadsToEachSection(browser, sourceEntry)
+  const theadsEntry = await addTheadsToEachSection(browser, sourceEntry);
+  saveFile(theadsEntry, "theadsEntry")
 
-  // await tab.screenshot({ path: "./data/screenshot.png", fullPage: true });
-  const readable = Readable.from(JSON.stringify(theadsEntry, null, 2));
-  const writeStream = fs.createWriteStream("./data/theadsEntry.json");
-  readable.pipe(writeStream);
 
   await browser.close();
-}
-
-async function openHomePage(
-  browser: ExtractTypeInPromise<ReturnType<typeof puppeteer.launch>>
-) {
-  const page = await browser.newPage();
-
-  await page.goto("https://rmov2.com/");
-  await page.type("input[name=username]", process.env.name);
-  await page.type("input[name=password]", process.env.password);
-
-  await Promise.all([
-    page.waitForNavigation({ timeout: 7000, waitUntil: "domcontentloaded" }),
-    page.click("button[name=loginsubmit]"),
-  ]);
-
-  return page;
 }
 
 async function getResourceEntry(
@@ -115,11 +63,14 @@ async function getTheads(browser: puppeteer.Browser, resourceEntryUrl: string) {
           (node) =>
             !(node.textContent && node.textContent.match(/售價|閱讀權限/g))
         )
-        .map((node) => ({
-          title: node.querySelector<HTMLAnchorElement>(".s.xst")?.text,
-          url: node.querySelector<HTMLAnchorElement>(".s.xst")?.href,
-          author: node.querySelector<HTMLAnchorElement>(".by a")?.text,
-        }));
+        .map(function buildTheadData(node) {
+          return {
+            title: node.querySelector<HTMLAnchorElement>(".s.xst")?.text,
+            url: node.querySelector<HTMLAnchorElement>(".s.xst")?.href,
+            author: node.querySelector<HTMLAnchorElement>(".by a")?.text,
+            status: node.querySelector("em a")?.textContent || undefined,
+          };
+        });
     }
   );
 
@@ -128,10 +79,10 @@ async function getTheads(browser: puppeteer.Browser, resourceEntryUrl: string) {
   return threads;
 
   async function getCurrentPage() {
-    let isSingelPage = await tab
+    const isSingelPage = await tab
       .$("#fd_page_bottom input[name=custompage]")
       .then((el) => el === null);
-    let currentPage = isSingelPage
+    const currentPage = isSingelPage
       ? 1
       : await tab.$eval("#fd_page_bottom input[name=custompage]", (el) =>
           Number((el as HTMLInputElement).value)
@@ -163,7 +114,7 @@ function addTheadsToEachSection(
   ): Promise<sourceNodeWithTheads[]> {
     const sourceNodesWithTheads = await Promise.all(
       sourceNodes.map(async function addTheads(sourceNode, i) {
-        await sleep(i * 2000)
+        await sleep(i * 2000);
         const theads = await getTheads(browser, sourceNode.url);
         return {
           ...sourceNode,
@@ -174,16 +125,3 @@ function addTheadsToEachSection(
     return sourceNodesWithTheads;
   }
 }
-function sleep(timer: number) {
-  return new Promise(res => setTimeout(res, timer))
-}
-// function saveImageToDisk(url, filename){
-//   fetch(url)
-//   .then(res => {
-//       const dest = fs.createWriteStream(filename);
-//       res.body.pipe(dest)
-//   })
-//   .catch((err) => {
-//       console.log(err)
-//   })
-// }
