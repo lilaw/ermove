@@ -5,7 +5,7 @@ import {sourceEntryWithTheads, sourceEntry, sourceNodeWithTheads, sourceNode} fr
 
 export async function main(): Promise<void> {
   const browser = await startBrowser();
-  const tab = await login(browser);
+  const tab = await login(browser)
   const sourceEntry = await getResourceEntry(tab);
   const theadsEntry = await addTheadsToEachSection(browser, sourceEntry);
   saveFile(theadsEntry, "theadsEntry")

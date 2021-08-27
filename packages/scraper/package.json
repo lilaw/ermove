@@ -1,5 +1,5 @@
 {
-  "name": "rmov",
+  "name": "scraper",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -25,6 +25,7 @@
     "faker": "^5.5.3",
     "immutable": "^4.0.0-rc.14",
     "node-fetch": "^2.6.1",
+    "normalizr": "^3.6.1",
     "puppeteer": "^10.2.0"
   }
 }

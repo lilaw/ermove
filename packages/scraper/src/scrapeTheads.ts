@@ -17,9 +17,9 @@ export async function main(): Promise<void> {
     fs.readFileSync("./data/theadsEntry.json").toString()
   ) as sourceEntryWithTheads;
 
-  const completedZone = theadsEntry[2];
+  const completedZone = theadsEntry[0];
   const completedZoneRes = await workOnTopicBlock(browser, completedZone);
-  saveFile(completedZoneRes, "completedZone");
+  saveFile(completedZoneRes, "mainZone");
 
   await browser.close();
 }
@@ -44,7 +44,6 @@ async function workOnSourceNodes(
 ) {
   const theads = await Promise.all(
     sourceNodes.theads
-      .slice(0, 100)
       .map((data, idx) => completedThead(browser, data, idx))
   );
 
@@ -60,7 +59,7 @@ async function workOnSourceNodes(
   ) {
     if (thead.url === undefined) return thead;
     await sleep(idx * 4000);
-    const content = await getTheadContent(browser, thead.url);
+    const content = await getTheadContent(browser, thead.url).catch(e => console.log('in url', thead.url, e));
 
     return {
       ...thead,
@@ -73,7 +72,7 @@ async function getTheadContent(broswer: puppeteer.Browser, url: string) {
   const page = await broswer.newPage();
   await page
     .goto(url)
-    .catch((e) => console.log("got tu error", url, 777777777777, e));
+    .catch((e) => console.log("while open", url, e));
 
   const contentHandle = await page.$(".plhin");
   const content = await page.evaluate(scrapeOP, contentHandle);
@@ -111,12 +110,14 @@ async function getTheadContent(broswer: puppeteer.Browser, url: string) {
   }
 }
 
+const a = Promise.resolve()
 function saveImageToDisk(img: { url: string; filename: string }) {
   const fullPath = "./data/img/" + img.filename;
   const absoluteUrl = new RegExp(/https?:\/\//).test(img.url)
     ? img.url
     : `https://rmov2.com/${img.url}`;
-  fetch(absoluteUrl)
+  a.then(() => fetch(absoluteUrl)
     .then((res) => res.body && res.body.pipe(fs.createWriteStream(fullPath)))
-    .catch(console.log);
+    .catch(console.log)
+  ).catch(console.log)
 }
