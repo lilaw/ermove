@@ -8,5 +8,9 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "generate": "yarn workspace ui generate",
+    "build": "yarn workspace ui build"
+  }
 }
