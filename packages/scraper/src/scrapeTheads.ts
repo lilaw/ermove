@@ -1,5 +1,4 @@
-import { sleep, login, startBrowser, saveFile } from "./lib";
-import fetch from "node-fetch";
+import { sleep, login, startBrowser, saveImgSeries } from "./lib";
 import * as fs from "fs";
 import * as puppeteer from "puppeteer";
 import type {
@@ -76,7 +75,7 @@ async function getTheadContent(broswer: puppeteer.Browser, url: string) {
 
   const contentHandle = await page.$(".plhin");
   const content = await page.evaluate(scrapeOP, contentHandle);
-  await Promise.all(content.imgs.map(saveImageToDisk));
+  await Promise.all(content.imgs.map(saveImgSeries));
   await page.close();
   return content;
 
@@ -110,14 +109,3 @@ async function getTheadContent(broswer: puppeteer.Browser, url: string) {
   }
 }
 
-const a = Promise.resolve()
-function saveImageToDisk(img: { url: string; filename: string }) {
-  const fullPath = "./data/img/" + img.filename;
-  const absoluteUrl = new RegExp(/https?:\/\//).test(img.url)
-    ? img.url
-    : `https://rmov2.com/${img.url}`;
-  a.then(() => fetch(absoluteUrl)
-    .then((res) => res.body && res.body.pipe(fs.createWriteStream(fullPath)))
-    .catch(console.log)
-  ).catch(console.log)
-}
