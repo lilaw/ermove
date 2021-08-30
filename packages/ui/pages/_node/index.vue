@@ -3,18 +3,18 @@
  <article>
   <h2>{{node.title}}</h2>
   <section class="theads">
-    <a :href="`${node.title}/${encodeURIComponent(thead.title)}`" v-for="thead in theads" :key="thead.title" class="thead">
+    <NuxtLink :to="`${encodeURIComponent(node.title)}/${encodeURIComponent(thead.title)}`" v-for="thead in theads" :key="thead.title" class="thead">
       <span class="thead__status">{{thead.status}}</span>
       <span class="thead__title">{{thead.title}}</span>
       <span class="thead__author">{{thead.author}}</span>
-    </a>
+    </NuxtLink>
   </section>
 
   </article>
   </main>
 </template>
-
 <script>
+
 export default {
   async asyncData ({ $content, route , redirect}) {
     const nodeParam = route.params.node

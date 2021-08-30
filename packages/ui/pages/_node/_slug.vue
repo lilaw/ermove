@@ -15,6 +15,7 @@
 <script >
 export default {
   async asyncData({ $content, route, redirect}) {
+    debugger
     const { node, slug } = route.params;
     const dataBasePath = whichZoneHasThis(node);
     const page = await $content(dataBasePath).fetch();
