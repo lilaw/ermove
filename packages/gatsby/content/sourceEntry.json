@@ -1,0 +1,89 @@
+[
+  {
+    "topic": "資源交流 (主要更新區)",
+    "sourceNodes": [
+      {
+        "title": "中港台劇集",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=2"
+      },
+      {
+        "title": "韓日歐美劇集",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=39"
+      },
+      {
+        "title": "綜藝節目",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=63"
+      },
+      {
+        "title": "電影交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=71"
+      },
+      {
+        "title": "動畫交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=72"
+      },
+      {
+        "title": "體育節目交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=73"
+      },
+      {
+        "title": "電台節目交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=74"
+      },
+      {
+        "title": "音樂交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=87"
+      },
+      {
+        "title": "貼圖及設計素材",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=75"
+      },
+      {
+        "title": "遊戲及軟件交流",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=76"
+      }
+    ]
+  },
+  {
+    "topic": "其它版區",
+    "sourceNodes": [
+      {
+        "title": "閒談影視娛樂",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=82"
+      },
+      {
+        "title": "吹水/話題討論/問題發表",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=83"
+      },
+      {
+        "title": "測試區",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=84"
+      },
+      {
+        "title": "密室",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=85"
+      }
+    ]
+  },
+  {
+    "topic": "完成全集封存區 (寶庫)",
+    "sourceNodes": [
+      {
+        "title": "中港台劇集 (全集)",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=42"
+      },
+      {
+        "title": "韓日歐美劇集 (全集)",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=43"
+      },
+      {
+        "title": "本地綜藝節目 (全集)",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=55"
+      },
+      {
+        "title": "其它綜藝節目 (全集)",
+        "url": "https://rmov2.com/forum.php?mod=forumdisplay&fid=56"
+      }
+    ]
+  }
+]
