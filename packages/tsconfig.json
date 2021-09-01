@@ -3,5 +3,6 @@
   "references": [
     { "path": "scraper" },
     { "path": "ui" },
+    { "path": "gatsby" },
   ]
 }

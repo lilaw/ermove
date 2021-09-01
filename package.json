@@ -10,8 +10,6 @@
     "packages/*"
   ],
   "scripts": {
-    "generate": "yarn workspace ui generate",
-    "build": "yarn workspace ui build",
-    "start": "yarn workspace ui build && yarn workspace start"
+    "build": "yarn workspace gatsby build"
   }
 }
