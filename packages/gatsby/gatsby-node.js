@@ -111,6 +111,9 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Fields {
       slug: String
     }
+    input FilterCategory {
+      noEq: String
+    }
   `)
 }
 
@@ -124,26 +127,21 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 
   createFieldExtension({
     name: "filter",
-    args: {
-      removeRegExp: {
-        type: "String",
-      },
-    },
     // The extension `args` (above) are passed to `extend` as
     // the first argument (`options` below)
     extend(options, prevFieldConfig) {
       return {
         args: {
-          removeRegExp: {
-            type: 'String',
-            defaultValue: 0,
+          regExp: {
+            type: 'FilterCategory',
+            defaultValue: {noEq: null},
           },
         },
         resolve(source, args, context, info) {
           return context.nodeModel.getAllNodes({
             type: "Category",
           }).filter(cat => cat.atTopic === source.topic)
-          .filter(cat => !(new RegExp(args.removeRegExp).test(cat.name)))
+          .filter(cat => !(new RegExp(args.regExp.noEq).test(cat.name)))
         },
       }
     },

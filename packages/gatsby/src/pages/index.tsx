@@ -55,7 +55,7 @@ export const query = graphql`
   {
     allZone {
       nodes {
-        categories(removeRegExp: "測試區|密室") {
+        categories(regExp: {noEq: "測試區|密室"}) {
           name
           catId
         }
